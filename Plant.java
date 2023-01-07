@@ -1,5 +1,9 @@
 public class Plant {
     
+    /**
+     *
+     */
+    private static final double SUN_GROWTH_RATE = 0.7;
     private static final int PLANT_NO = 10;
     private static Plant[] allPlants = new Plant[PLANT_NO];
     
@@ -36,6 +40,14 @@ public class Plant {
         return sum;
     }
 
+    public static boolean isBlooming (int index){
+        return (allPlants[index].getState() == GrowthState.BLOOMING);
+    }
+
+    public static void harvest (int index){
+        allPlants[index].setState(GrowthState.HARVESTED);
+    }
+
     public static boolean gameOver(){
         for (Plant p : allPlants) {
             if (!(p.getState() == GrowthState.HARVESTED || p.getState() == GrowthState.DEAD)){
@@ -54,9 +66,41 @@ public class Plant {
     public static void waterPlant (int index) {
         allPlants[index].setWet(true);
     }
+    
+    public static void fertilisePlant(int index) {
+        allPlants[index].setFertilised(true);
+    }
 
-    public static void plantUpdate(Weather weather){
+    public static void weatherEffects(Weather weather){
+        switch (weather){
+            case CLOUDY:
+                break;
+            case RAINY:
+                break;
+            case SNOWING:
+                editRandom(-1);
+                break;
+            case SUNNY:
+                editRandom(1);
+                break;
+            default:
+                break;
+        }
+    }
 
+    public static void editRandom(int rate){
+        for (Plant p : allPlants){
+            if(p.getState() == GrowthState.FLOURISHING || p.getState() == GrowthState.GROWING || p.getState() == GrowthState.DORMANT){
+                if(Math.random() > SUN_GROWTH_RATE){
+                    p.setGrowthLevel(p.getGrowthLevel()+rate);
+                }
+            }
+        }
+    }
+
+    
+
+    public static void plantUpdate(){
         for (Plant p : allPlants){
             
             GrowthState currentState = p.getState();
@@ -66,12 +110,10 @@ public class Plant {
             if(currentState == GrowthState.DEAD || currentState == GrowthState.HARVESTED){
                 continue;
             }
-            System.out.println(currentState);
             if(p.isWet()){
                 if(currentState == GrowthState.GROWING && p.isFertilised()){
                     p.setState(GrowthState.FLOURISHING);
                 } else if(currentState == GrowthState.DYING || currentState == GrowthState.WILTING || currentState == GrowthState.DORMANT) {
-                    System.out.println("BLA");
                     p.setState(GrowthState.GROWING);
                 } else if (currentState == GrowthState.GERMINATING){
                     p.setGrowthLevel(5);
@@ -118,4 +160,5 @@ public class Plant {
             System.out.println(p.getGrowthLevel() + " " + p.isWet() + " " + p.getState());
         }
     }
+
 }
