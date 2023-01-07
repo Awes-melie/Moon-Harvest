@@ -17,17 +17,18 @@ public class Player {
     public void setFertiliser(int fertiliser) { this.fertiliser = fertiliser; }
 
     public void playerActions() {
-        System.out.println("PLAYERACTIONS");
+        Output.actions(energy);
         while (energy > 0) {
             String command = getInput();
             if (command!=null) {
                 if (parseCommand(command)){
+                    Plant.listPlants();
                     energy -= 1;
                 } else {
-                    System.out.println("ERROR");
+                    Output.commandUnrecognised();
                 }
             } else {
-                System.out.println("ERROR");
+                Output.inputError();
             }
         }
     }
@@ -36,12 +37,13 @@ public class Player {
         String[] sections = command.split(" ");
         String order = sections[0].toLowerCase();
         if (sections.length > 1){
+
             String details = sections[1].toLowerCase();
 
             if (order.equals("water") || order.equals("w")){
                 try {
                     int index = Integer.valueOf(details);
-                    Plant.waterPlant(index);
+                    Plant.waterPlant(index-1);
                     return true;
                 } catch (Exception e) {
                     return false;
@@ -50,6 +52,13 @@ public class Player {
         } else {
             if (order.equals("exit") || order.equals("e")){
                 MoonHarvest.endGame();
+                energy = 0;
+                return true;
+            } if (order.equals("pass") || order.equals("p")){
+                energy -= 1;
+                return true;
+            } if (order.equals("help") || order.equals("h")){
+                Output.instructions();
                 return true;
             }
         }
