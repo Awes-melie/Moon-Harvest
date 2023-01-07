@@ -18,6 +18,10 @@ public class Player {
 
     public void playerActions() {        
         while (energy > 0) {
+            Output.dailyUpdate(MoonHarvest.getCurrentWeather(),MoonHarvest.getCurrentEnergy());
+            Plant.listPlants();
+            Output.actions(energy);
+            Output.resources(water, fertiliser);
             String command = getInput();
             if (command!=null) {
                 if (!parseCommand(command)){
@@ -26,8 +30,7 @@ public class Player {
             } else {
                 Output.inputError();
             }
-            Output.actions(energy);
-            Output.lineBreak();
+            Output.lineBreak(energy,water,fertiliser);
         }
     }
 
@@ -47,7 +50,6 @@ public class Player {
                     int index = Integer.valueOf(details);
                     Plant.waterPlant(index-1);
                     energy --;
-                    Plant.listPlants();
                     water --;
                     return true;
                 } catch (Exception e) {
@@ -62,7 +64,6 @@ public class Player {
                     int index = Integer.valueOf(details);
                     Plant.fertilisePlant(index-1);
                     energy --;
-                    Plant.listPlants();
                     fertiliser --;
                     return true;
                 } catch (Exception e) {

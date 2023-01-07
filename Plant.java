@@ -11,12 +11,14 @@ public class Plant {
     private boolean fertilised;
     private int growthLevel;
     private GrowthState state;
+    private String name;
 
-    public Plant(boolean wet, boolean fertilised, int growthLevel, GrowthState state) {
+    public Plant(boolean wet, boolean fertilised, int growthLevel, GrowthState state, String name) {
         this.wet = wet;
         this.fertilised = fertilised;
         this.growthLevel = growthLevel;
         this.state = state;
+        this.name = name;
     }
 
     public boolean isFertilised() {return fertilised;}
@@ -24,11 +26,11 @@ public class Plant {
     public GrowthState getState() {return state;}
     public void setState(GrowthState state) {this.state = state;}
     public int getGrowthLevel() {return growthLevel;}
-    public void setGrowthLevel(int growthLevel) {
-        this.growthLevel = growthLevel;
-    }
+    public void setGrowthLevel(int growthLevel) {this.growthLevel = growthLevel;}
     public boolean isWet() {return wet;}
     public void setWet(boolean wet) {this.wet = wet;}
+    public String getName() {return name;}
+    public void setName(String name) {this.name = name;}
 
     public static int harvestedPlants(){
         int sum = 0;
@@ -59,7 +61,7 @@ public class Plant {
 
     public static void initPlants(){
         for (int i = 0; i < PLANT_NO; i++) {
-            allPlants[i] = new Plant(false, false, 0, GrowthState.GERMINATING);
+            allPlants[i] = new Plant(false, false, 0, GrowthState.GERMINATING, "Bob");
         }
     }
 
@@ -157,8 +159,13 @@ public class Plant {
 
     public static void listPlants(){
         for(Plant p : allPlants){
-            System.out.println(p.getGrowthLevel() + " " + p.isWet() + " " + p.getState());
+            System.out.println(
+                Output.fill(p.getName(), 10) + ": " +
+                (p.isWet() ? "W:[#]" : "W:[-]") + " " +
+                (p.isFertilised() ? "F:[#]" : "F:[-]") + " " + 
+                Output.fill(p.getState().toString(), 12) + " Growth level:" +
+                p.getGrowthLevel()
+            );    
         }
     }
-
 }

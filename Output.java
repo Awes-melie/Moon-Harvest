@@ -23,12 +23,18 @@ public class Output {
     public static void outro(int plants){
         
     }
-    public static void lineBreak(){
-        System.out.println("====================");
+    public static void lineBreak(int energy, int water, int fertiliser){
+        for (int i = 0; i < 50; i++) {
+            System.out.println("");
+        }
+        System.out.println("-=["+energy+"]=["+water+"]=["+fertiliser+"]========-");
     }
 
-    public static void bigBreak(int day){
-        System.out.println("-====================- DAY "+ day +" -====================-");
+    public static void bigBreak(int day, int energy, int water, int fertiliser){
+        for (int i = 0; i < 50; i++) {
+            System.out.println("");
+        }
+        System.out.println("-=["+energy+"]=["+water+"]=["+fertiliser+"]========- DAY "+ day +" -====================-");
     }
 
     public static void dailyUpdate(Weather currentWeather, int currentEnergy) {
@@ -45,6 +51,20 @@ public class Output {
     }
     public static void notInBloom() {
         System.out.println("This plant is not ready to harvest yet.");
+    }
+
+    public static String fill(String string, int length){
+        if (string.length() == length){
+            return string;
+        } else if (string.length() < length){
+            int diff = length-string.length();
+            for (int i = 0; i < diff; i++) {
+                string = string + " ";
+            }
+        } else {
+            string = string.substring(0, length);
+        }
+        return string;
     }
     
 }
