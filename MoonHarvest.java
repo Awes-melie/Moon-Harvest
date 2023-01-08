@@ -14,6 +14,11 @@ public class MoonHarvest {
     }
 
     private static int date = 1;
+
+    public static int getDate() {
+        return date;
+    }
+
     private static int FINAL_DATE = 27;
 
     public static void endGame(){
@@ -26,10 +31,9 @@ public class MoonHarvest {
         gameRunning = true;
 
         entry();
+        Player.getInput();
 
         Plant.initPlants();
-
-        Plant.listPlants();
 
         while (gameRunning){
 
@@ -37,12 +41,12 @@ public class MoonHarvest {
             dailyUpdate();
             
             //Plants talk
-            Output.lineBreak();
+            Output.bigBreak(date);
             Plant.morningPlantsTalk();
             Player.getInput();
 
             //Take player actions
-            Output.bigBreak(date, currentEnergy, player.getWater(), player.getFertiliser());
+            Output.lineBreak(currentEnergy, player.getWater(), player.getFertiliser());
             player.setEnergy(currentEnergy);
             player.playerActions();
             
@@ -56,11 +60,10 @@ public class MoonHarvest {
             Plant.weatherEffects(currentWeather);
             Plant.plantUpdate();
 
-            
-            
+            player.reduceFertiliserTimer();
             date ++;
 
-            if (Plant.gameOver() || date == FINAL_DATE){
+            if (Plant.gameOver() || date > FINAL_DATE){
                 gameRunning = false;
             }
         }
@@ -76,7 +79,7 @@ public class MoonHarvest {
         Weather[] values = Weather.values();
         int random = (int) Math.floor(Math.random()*values.length);
         currentWeather = values[random];
-        currentEnergy = (int) (Math.floor(Math.random()*5.0) + 1);
+        currentEnergy = Output.randomInRange(1, 6);
     }
 
     public static void exit(){

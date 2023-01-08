@@ -56,6 +56,14 @@ public class Plant {
         return (allPlants[index].getState() == GrowthState.BLOOMING);
     }
 
+    public static boolean isWet (int index){
+        return (allPlants[index].isWet());
+    }
+
+    public static boolean isFertilised (int index){
+        return (allPlants[index].isFertilised());
+    }
+
     public static void harvest (int index){
         allPlants[index].setState(GrowthState.HARVESTED);
     }
@@ -104,6 +112,9 @@ public class Plant {
                         allPlants[i].lines[j][k] = temp[k];
                     }
                     reader.close();
+                    if(totalLines == 0){
+                        System.err.println("NO LINES IN PLANT " + i);
+                    }
                 } catch (Exception e){
                     System.out.println("Error loading dialogue files.");
                 }
@@ -111,6 +122,21 @@ public class Plant {
         }
     }
 
+    public static int idFromName (String name){
+        return switch (name.toLowerCase()){
+            case "monstera" -> 0;
+            case "cactus" -> 1;
+            case "orchid" -> 2;
+            case "bonsai" -> 3;
+            case "lilly" -> 4;
+            case "ivy" -> 5;
+            case "shamrock" -> 6;
+            case "aloe" -> 7;
+            case "jade" -> 8;
+            case "violet" -> 9;
+            default -> -1;
+        };
+    }
 
     public static void printDialogue(int plant, int dialogueType, int line){
         System.out.println(Output.fill(allPlants[plant].getName(),MAX_PLANT_NAME_LENGTH) + ": " + allPlants[plant].lines[dialogueType][line]);
@@ -130,18 +156,10 @@ public class Plant {
                 if(p.getState() == GrowthState.BLOOMING){
                     printDialogue(i, 1);
                     noPlantsTalk = false;
+                    i++;
                     continue;
                 }
                 if(Math.random() > TALK_PROBABILITY){
-                    if(p.getGrowthLevel()>=10){
-                        printDialogue(i, 8);
-                        noPlantsTalk = false;
-                        continue;
-                    } else if (p.getGrowthLevel()<=4) {
-                        printDialogue(i, 7);
-                        noPlantsTalk = false;
-                        continue;
-                    }
                     switch(p.getState()){
                         case FLOURISHING -> printDialogue(i, 2);
                         case GROWING -> printDialogue(i, 3);
@@ -168,10 +186,20 @@ public class Plant {
                 p.setJustGrown(false);
                 printDialogue(i, 0);
                 noPlantsTalk = false;
+                i++;
                 continue;
-            }
-            if(!(p.getState() == GrowthState.GERMINATING || p.getState() == GrowthState.HARVESTED || p.getState() == GrowthState.DEAD)){
-                if(Math.random() > TALK_PROBABILITY){
+            } else if (!(p.getState() == GrowthState.GERMINATING || p.getState() == GrowthState.HARVESTED || p.getState() == GrowthState.DEAD)){
+                if(p.getGrowthLevel()>=10){
+                    printDialogue(i, 8);
+                    noPlantsTalk = false;
+                    i++;
+                    continue;
+                } else if (p.getGrowthLevel()<=4) {
+                    printDialogue(i, 7);
+                    noPlantsTalk = false;
+                    i++;
+                    continue;
+                } else if(Math.random() > TALK_PROBABILITY){
                     int status = (p.isWet() ? 1 : 0) + (p.isFertilised() ? 2 : 0);
                     switch(status){
                         case 0 -> printDialogue(i, 11);
@@ -185,7 +213,7 @@ public class Plant {
             i++;
         }
         if (noPlantsTalk){
-            System.out.println("All you can hear is the wind blowing through the trees...");
+            System.out.println("You hear a low rumbling coming from each of your plant pots...");
         } 
     }
 
@@ -283,14 +311,17 @@ public class Plant {
     }
 
     public static void listPlants(){
+        int index = 1;
         for(Plant p : allPlants){
             System.out.println(
+                Output.fill(String.valueOf(index),2) + "|" +
                 Output.fill(p.getName(), MAX_PLANT_NAME_LENGTH) + ": " +
                 (p.isWet() ? "W:[#]" : "W:[-]") + " " +
                 (p.isFertilised() ? "F:[#]" : "F:[-]") + " " + 
                 Output.fill(p.getState().toString(), 12) + " Growth level:" +
                 p.getGrowthLevel()
-            );    
+            ); 
+            index ++;
         }
     }
 }
