@@ -36,16 +36,27 @@ public class MoonHarvest {
             //Update status
             dailyUpdate();
             
+            //Plants talk
+            Output.lineBreak();
+            Plant.morningPlantsTalk();
+            Player.getInput();
 
             //Take player actions
             Output.bigBreak(date, currentEnergy, player.getWater(), player.getFertiliser());
             player.setEnergy(currentEnergy);
             player.playerActions();
             
+            //Plants talk again
+
+            Output.lineBreak();
+            Plant.eveningPlantsTalk();
+            Player.getInput();
+
             //Update plants
             Plant.weatherEffects(currentWeather);
             Plant.plantUpdate();
 
+            
             
             date ++;
 

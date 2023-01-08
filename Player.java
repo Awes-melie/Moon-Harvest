@@ -38,70 +38,78 @@ public class Player {
         String[] sections = command.split(" ");
         String order = sections[0].toLowerCase();
         if (sections.length > 1){
-
-            String details = sections[1].toLowerCase();
-
-            if (order.equals("water") || order.equals("w")){
-                if (water <= 0){
-                    Output.notEnoughWater();
-                    return true;
-                }
-                try {
-                    int index = Integer.valueOf(details);
-                    Plant.waterPlant(index-1);
-                    energy --;
-                    water --;
-                    return true;
-                } catch (Exception e) {
-                    return false;
-                }
-            } else if (order.equals("fertilise") || order.equals("f")){
-                if (fertiliser <= 0){
-                    Output.notEnoughFertiliser();
-                    return true;
-                }
-                try {
-                    int index = Integer.valueOf(details);
-                    Plant.fertilisePlant(index-1);
-                    energy --;
-                    fertiliser --;
-                    return true;
-                } catch (Exception e) {
-                    return false;
-                }
-            } else if (order.equals("harvest") || order.equals("h")){
-                
-                try {
-                    int index = Integer.valueOf(details);
-                    if(Plant.isBlooming(index-1)){
-                        Plant.harvest(index-1);
-                        energy --;
-                    } else {
-                        Output.notInBloom();
+            for (int i = 1; i < sections.length; i++) {
+                String details = sections[i].toLowerCase();
+                if (order.equals("water") || order.equals("w")){
+                    if (water <= 0){
+                        Output.notEnoughWater();
+                        return true;
                     }
-                    return true;
-                } catch (Exception e) {
-                    return false;
+                    try {
+                        int index = Integer.valueOf(details);
+                        Plant.waterPlant(index-1);
+                        energy --;
+                        water --;
+                        
+                    } catch (Exception e) {
+                        return false;
+                    }
+                } else if (order.equals("fertilise") || order.equals("f")){
+                    if (fertiliser <= 0){
+                        Output.notEnoughFertiliser();
+                        return true;
+                    }
+                    try {
+                        int index = Integer.valueOf(details);
+                        Plant.fertilisePlant(index-1);
+                        energy --;
+                        fertiliser --;
+                        
+                    } catch (Exception e) {
+                        return false;
+                    }
+                } else if (order.equals("harvest") || order.equals("h")){
+                    
+                    try {
+                        int index = Integer.valueOf(details);
+                        if(Plant.isBlooming(index-1)){
+                            Plant.harvest(index-1);
+                            energy --;
+                        } else {
+                            Output.notInBloom();
+                        }
+                    } catch (Exception e) {
+                        return false;
+                    }
+                } else if (order.equals("pass") || order.equals("p")){
+                    try {
+                        int amount = Integer.valueOf(details);
+                        energy -= amount;
+                        return true;
+                    } catch (Exception e) {
+                        return false;
+                    }
                 }
             }
+            return true;
         } else {
             if (order.equals("exit") || order.equals("e")){
                 MoonHarvest.endGame();
                 energy = 0;
                 return true;
-            } if (order.equals("pass") || order.equals("p")){
+            } else if (order.equals("pass") || order.equals("p")){
                 energy --;
                 return true;
-            } if (order.equals("help") || order.equals("h")){
+            } else if (order.equals("help") || order.equals("h")){
                 Output.instructions();
                 return true;
-            } if (order.equals("help") || order.equals("h")){
+            } else if (order.equals("help") || order.equals("h")){
                 Output.instructions();
                 return true;
-            } if (order.equals("resources") || order.equals("r")){
+            } else if (order.equals("resources") || order.equals("r")){
                 Output.resources(water, fertiliser);
                 return true;
-            } if (order.equals("gather") || order.equals("g")){
+            } else if (order.equals("gather") || order.equals("g")){
                 if (MoonHarvest.getCurrentWeather() == Weather.RAINY){  
                     water += (int) (Math.floor(Math.random()*3.0) + 3);
                 } else {
@@ -116,7 +124,7 @@ public class Player {
     }
 
 
-    public String getInput () {
+    public static String getInput () {
         try {
             String command = input.readLine();
             return command;

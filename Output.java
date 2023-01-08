@@ -27,14 +27,21 @@ public class Output {
         for (int i = 0; i < 50; i++) {
             System.out.println("");
         }
-        System.out.println("-=["+energy+"]=["+water+"]=["+fertiliser+"]========-");
+        System.out.println("-=["+Output.fill(String.valueOf(energy),2)+"]=["+Output.fill(String.valueOf(water),2)+"]=["+Output.fill(String.valueOf(fertiliser),2)+"]=====-");
+    }
+
+    public static void lineBreak(){
+        for (int i = 0; i < 50; i++) {
+            System.out.println("");
+        }
+        System.out.println("-====================-");
     }
 
     public static void bigBreak(int day, int energy, int water, int fertiliser){
         for (int i = 0; i < 50; i++) {
             System.out.println("");
         }
-        System.out.println("-=["+energy+"]=["+water+"]=["+fertiliser+"]========- DAY "+ day +" -====================-");
+        System.out.println("-=["+Output.fill(String.valueOf(energy),2)+"]=["+Output.fill(String.valueOf(water),2)+"]=["+Output.fill(String.valueOf(fertiliser),2)+"]=====- DAY "+ day +" -====================-");
     }
 
     public static void dailyUpdate(Weather currentWeather, int currentEnergy) {
