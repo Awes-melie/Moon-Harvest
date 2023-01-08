@@ -6,11 +6,11 @@ public class Plant {
     private static final int MAX_PLANT_NAME_LENGTH = 8;
     private static final double TALK_PROBABILITY = 0.5;
     private static final double SUN_GROWTH_RATE = 0.7;
-    private static final int PLANT_NO = 10;
-    private static Plant[] allPlants = new Plant[PLANT_NO];
-    
+    private static final int PLANT_NO = 9;
     private static final int LINE_TYPES = 13;
     private static final int MAX_LINES = 20;
+
+    private static Plant[] allPlants = new Plant[PLANT_NO];
 
     private String[][] lines;
     private boolean wet;
@@ -91,7 +91,6 @@ public class Plant {
                 case 6 -> name = "Shamrock";
                 case 7 -> name = "Aloe";
                 case 8 -> name = "Jade";
-                case 9 -> name = "Violet";
                 default -> name = "Bob";
             }
 
@@ -133,7 +132,6 @@ public class Plant {
             case "shamrock" -> 6;
             case "aloe" -> 7;
             case "jade" -> 8;
-            case "violet" -> 9;
             default -> -1;
         };
     }

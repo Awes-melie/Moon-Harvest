@@ -79,7 +79,7 @@ public class MoonHarvest {
         Weather[] values = Weather.values();
         int random = (int) Math.floor(Math.random()*values.length);
         currentWeather = values[random];
-        currentEnergy = Output.randomInRange(1, 6);
+        currentEnergy = Output.randomInRange(4, 10);
     }
 
     public static void exit(){
