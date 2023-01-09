@@ -115,7 +115,7 @@ public class Plant {
                         System.err.println("NO LINES IN PLANT " + i);
                     }
                 } catch (Exception e){
-                    System.out.println("Error loading dialogue files.");
+                    System.out.println("Error loading dialogue files. Exception: " + e.toString());
                 }
             }
         }
@@ -187,17 +187,21 @@ public class Plant {
                 i++;
                 continue;
             } else if (!(p.getState() == GrowthState.GERMINATING || p.getState() == GrowthState.HARVESTED || p.getState() == GrowthState.DEAD)){
-                if(p.getGrowthLevel()>=10){
-                    printDialogue(i, 8);
-                    noPlantsTalk = false;
-                    i++;
-                    continue;
-                } else if (p.getGrowthLevel()<=4) {
-                    printDialogue(i, 7);
-                    noPlantsTalk = false;
-                    i++;
-                    continue;
-                } else if(Math.random() > TALK_PROBABILITY){
+                if(Math.random() > TALK_PROBABILITY){
+                    
+                    if(Math.random()>0.5){
+                        if(p.getGrowthLevel()>=10){
+                            printDialogue(i, 8);
+                            noPlantsTalk = false;
+                            i++;
+                            continue;
+                        } else if (p.getGrowthLevel()<=3) {
+                            printDialogue(i, 7);
+                            noPlantsTalk = false;
+                            i++;
+                            continue;
+                        }
+                    }
                     int status = (p.isWet() ? 1 : 0) + (p.isFertilised() ? 2 : 0);
                     switch(status){
                         case 0 -> printDialogue(i, 11);
@@ -278,7 +282,6 @@ public class Plant {
                     case DORMANT -> p.setState(GrowthState.WILTING);
                     case GROWING -> p.setState(GrowthState.DORMANT);
                     case FLOURISHING -> p.setState(GrowthState.GROWING);
-                    case BLOOMING -> p.setState(GrowthState.DYING);
                     default -> {}
                 }
             }
@@ -316,7 +319,7 @@ public class Plant {
                 Output.fill(p.getName(), MAX_PLANT_NAME_LENGTH) + ": " +
                 (p.isWet() ? "W:[#]" : "W:[-]") + " " +
                 (p.isFertilised() ? "F:[#]" : "F:[-]") + " " + 
-                Output.fill(p.getState().toString(), 12) + " Growth level:" +
+                Output.fill(p.getState().toString(), 15) + " Growth level:" +
                 p.getGrowthLevel()
             ); 
             index ++;

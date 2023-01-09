@@ -3,10 +3,15 @@ import java.io.BufferedReader;
 
 public class Player {
 
+    private static final int MAX_TAP = 8;
+    private static final int MIN_TAP = 5;
+    private static final int MAX_GATHER = 21;
+    private static final int MIN_GATHER = 16;
+
     static BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
 
-    private int water = 5;
-    private int fertiliser = 5;
+    private int water = 10;
+    private int fertiliser = 4;
     private int energy;
     private int daysTillFertiliser = -1;
     
@@ -84,7 +89,7 @@ public class Player {
                             try {
                                 int times = Integer.valueOf(details);
                                 while (energy > 0 && times > 0){
-                                    water += Output.randomInRange(8, 12);
+                                    water += Output.randomInRange(MIN_GATHER, MAX_GATHER);
                                     energy --;
                                     times --;
                                 }
@@ -98,7 +103,7 @@ public class Player {
                         try {
                             int times = Integer.valueOf(details);
                             while (energy > 0 && times > 0){
-                                water += Output.randomInRange(3, 5);
+                                water += Output.randomInRange(MIN_TAP, MAX_TAP);
                                 energy --;
                                 times --;
                             }
@@ -125,13 +130,13 @@ public class Player {
                 return "";
             } else if (order.equals("gather") || order.equals("g")){
                 if (MoonHarvest.getCurrentWeather() == Weather.RAINY || MoonHarvest.getCurrentWeather() == Weather.SNOWING){  
-                    water += Output.randomInRange(8, 12);
+                    water += Output.randomInRange(MIN_GATHER, MAX_GATHER);
                 } else {
                     return "It isn't raining or snowing currently.";
                 }
                 energy --;
             } else if (order.equals("tap") || order.equals("t")){
-                water += Output.randomInRange(3, 5);
+                water += Output.randomInRange(MIN_TAP, MAX_TAP);
                 energy --;
             } else if (order.equals("order") || order.equals("o")){
                 if(daysTillFertiliser < 1){

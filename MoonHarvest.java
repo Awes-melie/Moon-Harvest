@@ -1,5 +1,8 @@
 public class MoonHarvest {
 
+    private static final int MAX_ENERGY = 6;
+    private static final int MIN_ENERGY = 2;
+
     private static boolean gameRunning;
     private static Weather currentWeather;
     
@@ -42,6 +45,9 @@ public class MoonHarvest {
             
             //Plants talk
             Output.bigBreak(date);
+            if (date == FINAL_DATE){
+                System.out.println("FINAL DAY");
+            }
             Plant.morningPlantsTalk();
             Player.getInput();
 
@@ -49,6 +55,8 @@ public class MoonHarvest {
             Output.lineBreak(currentEnergy, player.getWater(), player.getFertiliser());
             player.setEnergy(currentEnergy);
             player.playerActions();
+            
+            Plant.listPlants();
             
             //Plants talk again
 
@@ -68,6 +76,7 @@ public class MoonHarvest {
             }
         }
 
+        Output.lineBreak();
         exit();
     }
 
@@ -79,7 +88,7 @@ public class MoonHarvest {
         Weather[] values = Weather.values();
         int random = (int) Math.floor(Math.random()*values.length);
         currentWeather = values[random];
-        currentEnergy = Output.randomInRange(4, 10);
+        currentEnergy = Output.randomInRange(MIN_ENERGY, MAX_ENERGY);
     }
 
     public static void exit(){
